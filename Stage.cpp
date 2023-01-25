@@ -3,8 +3,29 @@
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage")
+    :GameObject(parent, "Stage"), hModel_{ -1, -1 } 
 {
+    ZeroMemory(table_, sizeof(table_));
+
+    int t[15][15] = {
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,1,1,1,1,1,0,0,1},
+        {1,0,0,0,0,0,0,1,1,1,1,1,0,0,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,1,1,1,1,1,1,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,0,0,0,1,1,1,1,0,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+    };
+
+    memcpy(table_, t, sizeof(t));
 }
 
 //デストラクタ
@@ -15,12 +36,18 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
-    //モデルデータのロード
-    hModel_[TYPE_FLOOR] = Model::Load("Floor.fbx");
-    assert(hModel_[TYPE_FLOOR] >= 0);
+    const char* fileName[] = { 
+        "Floor.fbx" ,
+        "Wall.fbx" 
+    };
 
-    hModel_[TYPE_WALL] = Model::Load("Wall.fbx");
-    assert(hModel_[TYPE_WALL] >= 0);
+    //モデルデータのロード
+    for (int i = 0; i < TYPE_MAX; i++)
+    {
+        hModel_[i] = Model::Load(fileName[i]);
+        assert(hModel_[i] >= 0);
+    }
+
 }
 
 //更新
@@ -40,7 +67,8 @@ void Stage::Draw()
             blockTrans.position_.x = x;
             blockTrans.position_.z = z;
 
-            int type = x % 2;
+            int type = table_[x][z];
+
             Model::SetTransform(hModel_[type], blockTrans);
             Model::Draw(hModel_[type]);
         }

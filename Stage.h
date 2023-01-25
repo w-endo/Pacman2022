@@ -13,6 +13,7 @@ enum
 class Stage : public GameObject
 {
     int hModel_[TYPE_MAX];    //モデル番号
+    int table_[15][15];
 
 public:
     //コンストラクタ
