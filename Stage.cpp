@@ -1,31 +1,44 @@
 #include "Stage.h"
 #include "Engine/Model.h"
+#include "Engine/CsvReader.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hModel_{ -1, -1 } 
+    :GameObject(parent, "Stage"), 
+    hModel_{ -1, -1 },table_(nullptr),
+    width_(0), height_(0)
 {
-    ZeroMemory(table_, sizeof(table_));
+    //ZeroMemory(table_, sizeof(table_));
 
-    int t[15][15] = {
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,1,1,1,1,1,0,0,1},
-        {1,0,0,0,0,0,0,1,1,1,1,1,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,1,1,1,1,1,1,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,1,1,1,1,0,1},
-        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-    };
+    CsvReader csv;
+    csv.Load("map.csv");
 
-    memcpy(table_, t, sizeof(t));
+    width_ = csv.GetWidth();
+    height_ = csv.GetHeight();
+
+    table_ = new int* [width_];
+
+    for (int x = 0; x < width_; x++)
+    {
+        table_[x] = new int[height_];
+    }
+
+    for (int x = 0; x < width_; x++)
+    {
+        for (int z = 0; z < height_; z++)
+        {
+
+
+
+
+
+
+
+
+            table_[x][z] = csv.GetValue(x, z);
+        }
+    }
+
 }
 
 //デストラクタ
@@ -78,4 +91,9 @@ void Stage::Draw()
 //開放
 void Stage::Release()
 {
+    for (int x = 0; x < width_; x++)
+    {
+        delete[] table_[x];
+    }
+    delete[] table_;
 }
