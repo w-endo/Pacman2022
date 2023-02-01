@@ -27,15 +27,7 @@ Stage::Stage(GameObject* parent)
     {
         for (int z = 0; z < height_; z++)
         {
-
-
-
-
-
-
-
-
-            table_[x][z] = csv.GetValue(x, z);
+            table_[x][height_ -1 -z] = csv.GetValue(x, z);
         }
     }
 
