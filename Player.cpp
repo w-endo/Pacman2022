@@ -54,6 +54,22 @@ void Player::Update()
 
     transform_.position_.x += fMove.x;
     transform_.position_.z += fMove.z;
+
+    //å¸Ç´ïœçX
+    XMVECTOR vLength = XMVector3Length(vMove);
+    float length = XMVectorGetX(vLength);
+
+    if (length != 0)
+    {
+        XMVECTOR vFront = { 0, 0, 1, 0 };
+        vMove = XMVector3Normalize(vMove);
+
+        XMVECTOR vDot = XMVector3Dot(vFront, vMove);
+        float dot = XMVectorGetX(vDot);
+        float angle = acos(dot);
+
+        transform_.rotate_.y = XMConvertToDegrees(angle);
+    }
 }
 
 //ï`âÊ
