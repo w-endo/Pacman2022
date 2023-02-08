@@ -68,6 +68,12 @@ void Player::Update()
         float dot = XMVectorGetX(vDot);
         float angle = acos(dot);
 
+        XMVECTOR vCross = XMVector3Cross(vFront, vMove);
+        if (XMVectorGetY(vCross) < 0)
+        {
+            angle *= -1;
+        }
+
         transform_.rotate_.y = XMConvertToDegrees(angle);
     }
 }
