@@ -1,10 +1,15 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include "Stage.h"
 
 //◆◆◆を管理するクラス
 class Player : public GameObject
 {
     int hModel_;    //モデル番号
+    XMFLOAT3    prevPosition_;
+
+
+    Stage* pStage_;
 
 public:
     //コンストラクタ

@@ -34,4 +34,9 @@ public:
 
     //開放
     void Release() override;
+
+    //指定した位置が通れるか通れないかを調べる
+    //引数：x,z    調べる位置
+    //戻値：通れない＝true／通れない＝false
+    bool IsWall(int x, int z);
 };

@@ -1,10 +1,11 @@
 #include "Player.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
+#include "Engine/Debug.h"
 
 //コンストラクタ
 Player::Player(GameObject* parent)
-    :GameObject(parent, "Player"),hModel_(-1)
+    :GameObject(parent, "Player"),hModel_(-1),pStage_(nullptr)
     
 {
 }
@@ -22,11 +23,15 @@ void Player::Initialize()
 
     transform_.position_.x = 2;
     transform_.position_.z = 2;
+
+    pStage_ = (Stage*)FindObject("Stage");
 }
 
 //更新
 void Player::Update()
 {
+    prevPosition_ = transform_.position_;
+
     XMFLOAT3 fMove = XMFLOAT3(0, 0, 0);
 
     if (Input::IsKey(DIK_LEFT))
@@ -49,7 +54,7 @@ void Player::Update()
     XMVECTOR vMove;
     vMove = XMLoadFloat3(&fMove);
     vMove = XMVector3Normalize(vMove);
-    vMove *= 0.1f;
+    vMove *= 0.4f;
     XMStoreFloat3(&fMove, vMove);
 
     transform_.position_.x += fMove.x;
@@ -75,6 +80,47 @@ void Player::Update()
         }
 
         transform_.rotate_.y = XMConvertToDegrees(angle);
+    }
+
+    //壁との判定
+    int checkX;
+    int checkZ;
+
+    //右
+    {
+        checkX = (int)(transform_.position_.x + 0.3f);
+        checkZ = (int)transform_.position_.z;
+        if (pStage_->IsWall(checkX, checkZ) == true)
+        {
+            transform_.position_.x = prevPosition_.x;
+        }
+    }
+    //左
+    {
+        checkX = (int)(transform_.position_.x - 0.3f);
+        checkZ = (int)transform_.position_.z;
+        if (pStage_->IsWall(checkX, checkZ) == true)
+        {
+            transform_.position_ = prevPosition_;
+        }
+    }
+    //奥
+    {
+        checkX = (int)transform_.position_.x;
+        checkZ = (int)(transform_.position_.z + 0.3f);
+        if (pStage_->IsWall(checkX, checkZ) == true)
+        {
+            transform_.position_ = prevPosition_;
+        }
+    }
+    //手前
+    {
+        checkX = (int)transform_.position_.x;
+        checkZ = (int)(transform_.position_.z - 0.3f);
+        if (pStage_->IsWall(checkX, checkZ) == true)
+        {
+            transform_.position_ = prevPosition_;
+        }
     }
 }
 
