@@ -1,12 +1,13 @@
 #include "Player.h"
+#include "Gauge.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/Debug.h"
 
 //コンストラクタ
 Player::Player(GameObject* parent)
-    :GameObject(parent, "Player"),hModel_(-1),pStage_(nullptr)
-    
+    :GameObject(parent, "Player"),hModel_(-1),pStage_(nullptr),
+    maxHp_(120), nowHp_(40)
 {
 }
 
@@ -122,6 +123,27 @@ void Player::Update()
             transform_.position_ = prevPosition_;
         }
     }
+
+    if (Input::IsKeyDown(DIK_M))
+    {
+        nowHp_ += 30;
+        if (nowHp_ > maxHp_)
+        {
+            nowHp_ = maxHp_;
+        }
+    }
+    if (Input::IsKeyDown(DIK_N))
+    {
+        nowHp_ -= 30;
+        if (nowHp_ < 0)
+        {
+            nowHp_ = 0;
+        }
+    }
+
+    
+    Gauge* pGauge = (Gauge*)FindObject("Gauge");
+    pGauge->SetHp(nowHp_, maxHp_);
 }
 
 //描画

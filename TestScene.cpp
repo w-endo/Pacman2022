@@ -1,6 +1,7 @@
 #include "TestScene.h"
 #include "Stage.h"
 #include "Player.h"
+#include "Gauge.h"
 #include "Engine/Camera.h"
 
 //コンストラクタ
@@ -16,6 +17,7 @@ void TestScene::Initialize()
 	Camera::SetTarget(XMFLOAT3(7.5, 2, 3));
 	Instantiate<Stage>(this);
 	Instantiate<Player>(this);
+	Instantiate<Gauge>(this);
 }
 
 //更新

@@ -1,24 +1,19 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Stage.h"
 
 //◆◆◆を管理するクラス
-class Player : public GameObject
+class Gauge : public GameObject
 {
-    int hModel_;    //モデル番号
-    XMFLOAT3    prevPosition_;
-
-
-    Stage* pStage_;
+    int hPictGauge_;    //画像番号（ゲージの中身）
+    int hPictFrame_;    //画像番号（ゲージの外枠）
 
     int nowHp_, maxHp_;
-
 public:
     //コンストラクタ
-    Player(GameObject* parent);
+    Gauge(GameObject* parent);
 
     //デストラクタ
-    ~Player();
+    ~Gauge();
 
     //初期化
     void Initialize() override;
@@ -31,4 +26,10 @@ public:
 
     //開放
     void Release() override;
+
+    void SetHp(int nowHp, int maxHp)
+    {
+        nowHp_ = nowHp;
+        maxHp_ = maxHp;
+    }
 };
