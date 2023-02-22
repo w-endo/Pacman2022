@@ -7,7 +7,7 @@ class Gauge : public GameObject
     int hPictGauge_;    //画像番号（ゲージの中身）
     int hPictFrame_;    //画像番号（ゲージの外枠）
 
-    int nowHp_, maxHp_;
+    int nowHp_, maxHp_, animHp_;
 public:
     //コンストラクタ
     Gauge(GameObject* parent);
@@ -31,5 +31,6 @@ public:
     {
         nowHp_ = nowHp;
         maxHp_ = maxHp;
+        animHp_ = (animHp_ * 9 + nowHp_) / 10;
     }
 };

@@ -36,7 +36,7 @@ void Gauge::Draw()
 {
 
     Transform transGauge = transform_;
-    transGauge.scale_.x = (float)nowHp_ / (float)maxHp_;
+    transGauge.scale_.x = (float)animHp_ / (float)maxHp_;
     Image::SetTransform(hPictGauge_, transGauge);
     Image::Draw(hPictGauge_);
 
